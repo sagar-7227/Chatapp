@@ -1,19 +1,19 @@
 const express =  require('express');
 const chats = require('./data/data');
 const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const userRoutes = require('./routes/userRoutes');
+const {notFound, errorHandler} = require('./middleware/errorMiddleware');
 
 const app = express();
 dotenv.config();
+connectDB();
+app.use(express.json());
 
-app.get('/api/chats', (req, res) => {
-    res.send(chats);
+app.use('/api/user',userRoutes);
 
-},);
-
-app.get('/api/chats/:id', (req, res) => {
-    const singlechat = chats.find((c) => c._id === req.params.id);
-    res.send(singlechat);
-});
-
+// global user handlers
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(process.env.PORT || 5000, () => console.log('Server started on port 5000'));

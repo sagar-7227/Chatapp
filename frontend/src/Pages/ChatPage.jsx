@@ -4,26 +4,31 @@ import axios from "axios";
 
 const Chatpage = () => {
 
-    const [chats, setChats] = useState([]);
+    // const [chats, setChats] = useState([]);
 
-    const fetchChats = async () => {
-        const { data } = await axios.get("/api/chats");
-        setChats(data);
-    };
+    // const fetchChats = async () => {
+    //     const { data } = await axios.get("/api/chats");
+    //     setChats(data);
+    // };
 
-    useEffect(() => {
-        fetchChats();
-    }
-        , []);
+    // useEffect(() => {
+    //     fetchChats();
+    // }
+    //     , []);
 
     return (
-        <div>{
+        <div>
+            
+            {/* {
             chats.map((chat) => (
                 <div key={chat._id}>
                     <div>{chat.chatName}</div>
                 </div>
             ))
-        }</div>
+        } */}
+        Page found
+        
+        </div>
     );
 
 };
