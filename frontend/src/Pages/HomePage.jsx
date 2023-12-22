@@ -12,15 +12,17 @@ import { useEffect } from "react";
 import { useHistory } from "react-router";
 import Login from "../components/Authentication/Login";
 import Signup from "../components/Authentication/Signup";
+import { ChatState } from "../Context/ChatProvider";
 
 function Homepage() {
   const history = useHistory();
+  const {user} = ChatState()
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
+    // const user = JSON.parse(localStorage.getItem("userInfo"));
 
     if (user) history.push("/chats");
-  }, [history]);
+  }, [user, history]);
 
   return (
     <Container maxW="xl" centerContent>

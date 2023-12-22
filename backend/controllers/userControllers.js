@@ -2,22 +2,24 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/user");
 const generateToken = require("../config/generateToken");
 
-// get all user handler
+// get all user handler /api/user - get
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
+      $or: [
+        // whether the name or email contains the search keyword and its case senative
+        { name: { $regex: req.query.search, $options: "i" } },
+        { email: { $regex: req.query.search, $options: "i" } },
+      ],
+    }
     : {};
 
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  // firstly we have to login the user to get the token and then it knows which user is logged in
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } }); // find all users except the logged in user
   res.send(users);
 });
 
-// register user handler
+// register user handler /api/user - post
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
 
@@ -55,7 +57,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// verify the user handler
+// verify the user handler - post
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 

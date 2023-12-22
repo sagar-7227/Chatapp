@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const {notFound, errorHandler} = require('./middleware/errorMiddleware');
+const chatRoutes = require('./routes/chatRoutes');
 
 const app = express();
 dotenv.config();
@@ -11,6 +12,7 @@ connectDB();
 app.use(express.json());
 
 app.use('/api/user',userRoutes);
+app.use('/api/chat',chatRoutes);
 
 // global user handlers
 app.use(notFound);
