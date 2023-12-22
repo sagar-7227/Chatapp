@@ -9,14 +9,14 @@ const ChatProvider = ({ children }) => {
     const [chats, setChats] = useState();
 
     const history = useHistory();
+    
 
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         setUser(userInfo);
 
-
         // if user is not logged in, redirect to login page
-        // if (!userInfo) history.push("/");
+        if (!userInfo) history.push("/");
     }, [history]);
 
     return (

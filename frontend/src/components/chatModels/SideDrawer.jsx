@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
-import { Box, Text, Spacer, Flex } from "@chakra-ui/layout";
+import { Box, Text, } from "@chakra-ui/layout";
 import {
     Menu,
     MenuButton,
@@ -26,9 +26,9 @@ import { useToast } from "@chakra-ui/toast";
 import ChatLoading from "../ChatLoading";
 import { Spinner } from "@chakra-ui/spinner";
 import ProfileModal from "./ProfileModal";
-// import NotificationBadge from "react-notification-badge";
-// import { Effect } from "react-notification-badge";
-// import { getSender } from "../../config/ChatLogics";
+import NotificationBadge from "react-notification-badge";
+import { Effect } from "react-notification-badge";
+import { getSender } from "../config/ChatLogics";
 import UserListItem from "../ProfileStruct/UserListItem";
 import { ChatState } from "../../Context/ChatProvider";
 
@@ -127,110 +127,107 @@ function SideDrawer() {
     return (
         <>
             <Box
-                d="flex"
+                display="flex"
                 justifyContent="space-between"
                 alignItems="center"
                 bg="white"
                 w="100%"
                 p="5px 10px 5px 10px"
                 borderWidth="5px"
+
             >
-                <Flex minWidth="max-content" alignItems="center" gap={'2'}>
-                    <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
-                        <Button variant="ghost" onClick={onOpen}>
-                            <i className="fas fa-search"></i>
-                            <Text d={{ base: "none", md: "flex" }} px={4}>
-                                Search User
-                            </Text>
-                        </Button>
-                    </Tooltip>
+                <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
+                    <Button variant="ghost" onClick={onOpen}>
+                        <i className="fas fa-search"></i>
+                        <Text display={{ base: "none", md: "flex" }} px={4}>
+                            Search User
+                        </Text>
+                    </Button>
+                </Tooltip>
 
-                    <Spacer />
+                <Text fontSize="2xl" fontFamily="Work sans" fontWeight={'bold'}>
+                    CHAT-APP
+                </Text>
 
-                    <Text fontSize="2xl" fontFamily="Work sans">
-                        Talk-A-Tive
-                    </Text>
-
-                    <Spacer />
-
-                    <div>
-                        <Menu>
-                            <MenuButton p={1}>
-                                {/* <NotificationBadge
+                <div>
+                    <Menu>
+                        <MenuButton p={1}>
+                            <NotificationBadge
                                 count={notification.length}
-                                // effect={Effect.SCALE}
-                            /> */}
-                                <BellIcon fontSize="2xl" m={1} />
-                            </MenuButton>
+                                effect={Effect.SCALE}
+                            />
+                            <BellIcon fontSize="2xl" m={1} />
+                        </MenuButton>
 
-                            <MenuList pl={2}>
-                                {!notification.length && "No New Messages"}
-                                {notification.map((notif) => (
-                                    <MenuItem
-                                        key={notif._id}
-                                        onClick={() => {
-                                            setSelectedChat(notif.chat);
-                                            setNotification(notification.filter((n) => n !== notif));
-                                        }}
-                                    >
-                                        {/* {notif.chat.isGroupChat
+                        <MenuList pl={2}>
+                            {!notification.length && "No New Messages"}
+                            {notification.map((notif) => (
+                                <MenuItem
+                                    key={notif._id}
+                                    onClick={() => {
+                                        setSelectedChat(notif.chat);
+                                        setNotification(notification.filter((n) => n !== notif));
+                                    }}
+                                >
+                                    {notif.chat.isGroupChat
                                         ? `New Message in ${notif.chat.chatName}`
-                                        : `New Message from ${getSender(user, notif.chat.users)}`} */}
-                                    </MenuItem>
-                                ))}
-                            </MenuList>
-                        </Menu>
+                                        : `New Message from ${getSender(user, notif.chat.users)}`}
+                                </MenuItem>
+                            ))}
+                        </MenuList>
+                    </Menu>
 
-                        <Menu>
-                            <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
-                                <Avatar
-                                    size="sm"
-                                    cursor="pointer"
-                                    name={user.name}
-                                    src={user.pic}
+                    <Menu>
+                        <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
+                            <Avatar
+                                size="sm"
+                                cursor="pointer"
+                                name={user.name}
+                                src={user.pic}
+                            />
+                        </MenuButton>
+                        <MenuList>
+                            <ProfileModal user={user}>
+                                <MenuItem>My Profile</MenuItem>{" "}
+                            </ProfileModal>
+                            <MenuDivider />
+                            <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                        </MenuList>
+                    </Menu>
+                </div>
+
+
+                <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+                    <DrawerOverlay />
+                    <DrawerContent>
+                        <DrawerHeader fontWeight={'bold'} borderBottomWidth="1px">SEARCH USERS</DrawerHeader>
+                        <DrawerBody bgGradient="linear(to-t,#7928CA,#FF0080)">
+                            <Box display="flex" pb={2}>
+                                <Input
+                                    textColor={'white'}
+                                    placeholder="Search by name or email"
+                                    mr={2}
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    _placeholder={{ color: "black" }}
                                 />
-                            </MenuButton>
-                            <MenuList>
-                                <ProfileModal user={user}>
-                                    <MenuItem>My Profile</MenuItem>{" "}
-                                </ProfileModal>
-                                <MenuDivider />
-                                <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-                            </MenuList>
-                        </Menu>
-                    </div>
-
-
-                    <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-                        <DrawerOverlay />
-                        <DrawerContent>
-                            <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
-                            <DrawerBody>
-                                <Box d="flex" pb={2}>
-                                    <Input
-                                        placeholder="Search by name or email"
-                                        mr={2}
-                                        value={search}
-                                        onChange={(e) => setSearch(e.target.value)}
+                                <Button onClick={handleSearch}>Go</Button>
+                            </Box>
+                            {loading ? (
+                                <ChatLoading />
+                            ) : (
+                                searchResult?.map((user) => (
+                                    <UserListItem
+                                        key={user._id}
+                                        user={user}
+                                        handleFunction={() => accessChat(user._id)}
                                     />
-                                    <Button onClick={handleSearch}>Go</Button>
-                                </Box>
-                                {loading ? (
-                                    <ChatLoading />
-                                ) : (
-                                    searchResult?.map((user) => (
-                                        <UserListItem
-                                            key={user._id}
-                                            user={user}
-                                            handleFunction={() => accessChat(user._id)}
-                                        />
-                                    ))
-                                )}
-                                {loadingChat && <Spinner ml="auto" d="flex" />}
-                            </DrawerBody>
-                        </DrawerContent>
-                    </Drawer>
-                </Flex>
+                                ))
+                            )}
+                            {loadingChat && <Spinner ml="auto" d="flex" />}
+                        </DrawerBody>
+                    </DrawerContent>
+                </Drawer>
             </Box>
         </>
     );

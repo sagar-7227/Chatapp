@@ -1,9 +1,15 @@
-import React from 'react'
+const express = require("express");
+const {
+  allMessages,
+  sendMessage,
+} = require("../controllers/messageControllers");
 
-const messageRoutes = () => {
-  return (
-    <div>messageRoutes</div>
-  )
-}
 
-export default messageRoutes
+const { protect } = require("../middleware/authMiddleware");
+
+const router = express.Router();
+
+router.route("/:chatId").get(protect, allMessages);
+router.route("/").post(protect, sendMessage);
+
+module.exports = router;
