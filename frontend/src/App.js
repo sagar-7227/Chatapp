@@ -4,7 +4,6 @@ import Chatpage from "./Pages/ChatPage";
 
 function App() {
   return (
-
     <div className="App">
       <Router>
         <Switch>

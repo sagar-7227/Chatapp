@@ -10,7 +10,6 @@ import ProfileModal from "./chatModels/ProfileModal";
 import ScrollableChat from "./ScrollableChat";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
-
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./chatModels/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
@@ -26,6 +25,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [istyping, setIsTyping] = useState(false);
     const toast = useToast();
 
+    // default options for lottie
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -54,10 +54,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 `/api/message/${selectedChat._id}`,
                 config
             );
+
             console.log(data);
             setMessages(data);
             setLoading(false);
-
             socket.emit("join chat", selectedChat._id);
         } catch (error) {
             toast({
@@ -239,7 +239,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
                                     <Lottie
                                         options={defaultOptions}
-                                        // height={50}
                                         width={70}
                                         style={{ marginBottom: 15, marginLeft: 0 }}
                                     />
@@ -258,7 +257,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     </Box>
                 </>
             ) : (
-                // to get socket.io on same page
+                
                 <Box display="flex" alignItems="center" justifyContent="center" h="100%">
                     <Text fontSize="3xl" pb={3} fontFamily="Work sans">
                         Click on a user to start chatting

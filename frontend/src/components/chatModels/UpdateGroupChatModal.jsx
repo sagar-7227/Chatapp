@@ -30,7 +30,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
     const [loading, setLoading] = useState(false);
     const [renameloading, setRenameLoading] = useState(false);
     const toast = useToast();
-
     const { selectedChat, setSelectedChat, user } = ChatState();
 
     const handleSearch = async (query) => {
@@ -83,7 +82,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
             );
 
             console.log(data._id);
-            // setSelectedChat("");
             setSelectedChat(data);
             setFetchAgain(!fetchAgain);
             setRenameLoading(false);

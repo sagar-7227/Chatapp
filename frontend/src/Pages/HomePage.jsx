@@ -28,7 +28,6 @@ function Homepage() {
       h="100vh"
       bgGradient="linear(to-t,#7928CA,#FF0080)">
 
-
       <Container maxW="xl" centerContent>
         <Box
           display="flex"
@@ -43,7 +42,10 @@ function Homepage() {
           <Text fontSize="4xl" fontFamily="Work sans" fontWeight="bold">
             CHAT APP
           </Text>
+
         </Box>
+
+    {/* for switching btw login and signup */}
         <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
           <Tabs isFitted variant="soft-rounded">
             <TabList mb="1em">

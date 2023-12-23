@@ -11,7 +11,7 @@ const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// only logged in users can access these routes
+// only logged in users can access these routes using protect middleware
 router.route("/").post(protect, accessChat);
 router.route("/").get(protect, fetchChats);
 router.route("/group").post(protect, createGroupChat);

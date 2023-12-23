@@ -71,7 +71,6 @@ function SideDrawer() {
         try {
             setLoading(true);
 
-
             // sending bearer token with the request
             const config = {
                 headers: {

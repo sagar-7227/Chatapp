@@ -3,8 +3,6 @@
 .App {
   min-height: 100vh;
   display: flex;
-  /* background-image: url("bg image"); */
-  background-color: aqua;
   background-position: center;
   background-size: cover;
 }

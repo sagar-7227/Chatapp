@@ -21,16 +21,18 @@ const userSchema = mongoose.Schema(
   { timestaps: true }
 );
 
-// hashed the password in database
+// if the password entered by the user matches the password in the database
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// before saving the user to the database, hash the password
 userSchema.pre("save", async function (next) {
   if (!this.isModified) {
     next();
   }
 
+  // salt is a random string added to the password to make it more secure
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

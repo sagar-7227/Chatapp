@@ -7,10 +7,9 @@ const ChatProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [notification, setNotification] = useState([]);
     const [chats, setChats] = useState();
-
     const history = useHistory();
-    
 
+    // get the user info from local storage
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         setUser(userInfo);

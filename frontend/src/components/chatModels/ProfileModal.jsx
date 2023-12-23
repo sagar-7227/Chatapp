@@ -38,15 +38,12 @@ const ProfileModal = ({ user, children }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody
-
             display="flex"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-
           >
             <Image
-
               borderRadius="full"
               boxSize="150px"
               src={user.pic}

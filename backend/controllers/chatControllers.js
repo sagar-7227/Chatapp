@@ -11,6 +11,7 @@ const accessChat = asyncHandler(async (req, res) => {
         return res.sendStatus(400);
     }
 
+    // check if chat already exists
     var isChat = await Chat.find({
         isGroupChat: false,
         // both users are in the chat
@@ -53,9 +54,10 @@ const accessChat = asyncHandler(async (req, res) => {
     }
 });
 
-//  /api/chat - fetch for particular user
+//  /api/chat - fetch chat for particular user
 const fetchChats = asyncHandler(async (req, res) => {
     try {
+        // check for chats where the user is present with this id
         Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
@@ -80,7 +82,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
         return res.status(400).send({ message: "Please Fill all the feilds" });
     }
 
-    // users want to add in group
+    // users that you want to add in group
     var users = JSON.parse(req.body.users);
 
     if (users.length < 2) {
@@ -100,6 +102,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
             groupAdmin: req.user,
         });
 
+        // create user with user as admin
         const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
             .populate("users", "-password")
             .populate("groupAdmin", "-password");
@@ -140,13 +143,14 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     const { chatId, userId } = req.body;
 
     // check if the requester is admin
-
     const removed = await Chat.findByIdAndUpdate(
         chatId,
         {
+            // like pop the user
             $pull: { users: userId },
         },
-        {
+        {   
+            // return the updated chat
             new: true,
         }
     )
@@ -166,7 +170,6 @@ const addToGroup = asyncHandler(async (req, res) => {
     const { chatId, userId } = req.body;
 
     // check if the requester is admin
-
     const added = await Chat.findByIdAndUpdate(
         chatId,
         {

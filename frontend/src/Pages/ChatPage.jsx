@@ -6,7 +6,7 @@ import { ChatState } from "../Context/ChatProvider";
 import Chatbox from "../components/Chatbox";
 
 const Chatpage = () => {
-  // when the user  left we have to fetch the chats again
+  // when the user  left or add we have to fetch the chats again
   const [fetchAgain, setFetchAgain] = useState(false);
   const { user } = ChatState();
 

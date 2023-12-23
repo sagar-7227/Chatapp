@@ -1,5 +1,4 @@
 const express = require('express');
-const chats = require('./data/data');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
@@ -12,11 +11,12 @@ dotenv.config();
 connectDB();
 app.use(express.json());
 
+// calling all apis
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/message', messageRoutes);
 
-// global user handlers
+// global errors handlers
 app.use(notFound);
 app.use(errorHandler);
 
@@ -27,6 +27,7 @@ const server = app.listen(
     console.log(`Server running on PORT ${PORT}...`)
 );
 
+// socket.io real time chat
 const io = require("socket.io")(server, {
     pingTimeout: 60000, // close connection if ping is not received within 60 seconds
     cors: {
@@ -46,13 +47,16 @@ io.on("connection", (socket) => {
 
     // join a chatroom
     socket.on("join chat", (room) => {
+        // both users join the same room or now chat can start
         socket.join(room);
         console.log("User Joined Room: " + room);
     });
 
+    // for lotties typing animation
     socket.on("typing", (room) => socket.in(room).emit("typing"));
     socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
+    // when new message is generated
     socket.on("new message", (newMessageRecieved) => {
         var chat = newMessageRecieved.chat;
 
@@ -60,11 +64,14 @@ io.on("connection", (socket) => {
 
         // message recieved by all users in chat except sender
         chat.users.forEach((user) => {
+            // user is sender
             if (user._id == newMessageRecieved.sender._id) return;
 
+            // send message to all users in chat
             socket.in(user._id).emit("message recieved", newMessageRecieved);
         });
     });
+
     socket.off("setup", () => {
         console.log("USER DISCONNECTED");
         socket.leave(userData._id);

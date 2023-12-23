@@ -5,6 +5,7 @@ const asyncHandler = require("express-async-handler");
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
+  // Bearer token to authorize user, same as jwt token
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -15,6 +16,7 @@ const protect = asyncHandler(async (req, res, next) => {
       //decodes token id
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+      // user details except password
       req.user = await User.findById(decoded.id).select("-password");
 
       next();

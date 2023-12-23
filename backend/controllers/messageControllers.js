@@ -6,6 +6,7 @@ const Chat = require("../models/chat");
 //  /api/message/:chatId
 const allMessages = asyncHandler(async (req, res) => {
   try {
+    // check for chats where the user is present with this id
     const messages = await Message.find({ chat: req.params.chatId })
       .populate("sender", "name pic email")
       .populate("chat");
@@ -32,6 +33,7 @@ const sendMessage = asyncHandler(async (req, res) => {
   };
 
   try {
+    // create a new message
     var message = await Message.create(newMessage);
 
     message = await message.populate("sender", "name pic");
