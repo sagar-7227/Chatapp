@@ -52,7 +52,7 @@ const server = app.listen(
 const io = require("socket.io")(server, {
     pingTimeout: 60000, // close connection if ping is not received within 60 seconds
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://chat-app-jxt7.onrender.com",
         // credentials: true,
     },
 });
